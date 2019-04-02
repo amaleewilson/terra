@@ -307,9 +307,14 @@ int terra_toptx(lua_State * L) {
         #if LLVM_VERSION < 38
         M->dump();
         #else
-        M->print(llvm::errs(), nullptr);
+        //M->print(llvm::errs(), nullptr);
         #endif
-        fprintf(stderr,"Generated PTX:\n%s\n",ptx.c_str());
+        //fprintf(stderr,"Generated PTX:\n%s\n",ptx.c_str());
+        FILE *fp;
+         fp = fopen("/home/amaleewilson/forked_legion/legion/language/src/test_ptx_output.ptx", "w");//opening file  
+         fprintf(fp,"%s", ptx.c_str());//writing data into file  
+         fclose(fp);//closing file  
+        //fprintf(stderr,ptx.c_str());
     }
     lua_pushstring(L,ptx.c_str());
     return 1;
