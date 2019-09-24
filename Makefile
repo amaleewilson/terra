@@ -212,7 +212,8 @@ build/$(LUAJIT_DIR):
 	(git clone -b $(LUAJIT_BRANCH) $(LUAJIT_URL) $(LUAJIT_DIR))
 
 build/lib/libluajit-5.1.a: build/$(LUAJIT_DIR)
-	(cd $(LUAJIT_DIR); make install PREFIX=$(realpath build) CC=$(CC) STATIC_CC="$(CC) -fPIC" XCFLAGS=-DLUAJIT_ENABLE_GC64)
+	# MACOSX_DEPLOYMENT_TARGET is a workaround for https://github.com/LuaJIT/LuaJIT/issues/484
+	(cd $(LUAJIT_DIR); make install PREFIX=$(realpath build) CC=$(CC) STATIC_CC="$(CC) -fPIC" XCFLAGS=-DLUAJIT_ENABLE_GC64 MACOSX_DEPLOYMENT_TARGET=10.6)
 
 release/include/terra/%.h:  $(LUAJIT_INCLUDE)/%.h $(LUAJIT_LIB) 
 	cp $(LUAJIT_INCLUDE)/$*.h $@
